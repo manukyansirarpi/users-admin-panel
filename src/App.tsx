@@ -10,7 +10,6 @@ const App = () => {
       <SideBar></SideBar>
       <div className={classes.contentWrapper}>
         <Routes>
-            {/* <Route path=":categoryId" element={<Cats />} /> */}
             <Route path="/" element={<Users />} />
         </Routes>    
       </div>
