@@ -1,10 +1,19 @@
 import React from 'react';
+import { Routes, Route } from "react-router-dom";
+import SideBar from './components/sideBar/SideBar';
+import Users from './components/users/Users';
+import classes from './App.module.css';
 
-function App() {
+const App = () => {
   return (
     <div className="App">
-    App
-    
+      <SideBar></SideBar>
+      <div className={classes.contentWrapper}>
+        <Routes>
+            {/* <Route path=":categoryId" element={<Cats />} /> */}
+            <Route path="/" element={<Users />} />
+        </Routes>    
+      </div>
     </div>
   );
 }
