@@ -14,7 +14,7 @@ const SideBar: React.FC = () => {
                 </li>
                 <li className = {[classes.sideBarItem, classes.selected].join(' ')}>
                     <PeopleIcon className={classes.icon}/>
-                    <Link to="/">Users</Link>
+                    <Link to="/users">Users</Link>
                 </li>
             </ul>
         </div>

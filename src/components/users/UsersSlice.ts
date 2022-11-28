@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { fetchUsers } from './usersAPI';
+import { fetchUsers, fetchUsersParams } from './usersAPI';
 
 export interface UserI {
    id: number;
@@ -13,20 +13,26 @@ export interface UserI {
    disabled: boolean;
 }
 
+export enum UserStatus {
+  LOADING = "loading",
+  IDLE = "idle",
+  ERROR = "error",
+}
+
 export interface UsersState {
   data: UserI[];
-  status: 'idle' | 'loading' | 'failed';
+  status: UserStatus;
 }
 
 const initialState: UsersState = {
   data: [],
-  status: 'idle'
+  status: UserStatus.IDLE
 };
 
 export const getUsersAsync = createAsyncThunk(
   'users/fetchUsers',
-  async () => {
-    const response = await fetchUsers();
+  async (params: fetchUsersParams) => {
+    const response = await fetchUsers(params);
     return response;
   }
 );
@@ -39,18 +45,19 @@ export const usersSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getUsersAsync.pending, (state) => {
-        state.status = 'loading';
+        state.status = UserStatus.LOADING
       })
       .addCase(getUsersAsync.fulfilled, (state, action) => {
-        state.status = 'idle';
+        state.status = UserStatus.IDLE;
         state.data = action.payload;
       })
       .addCase(getUsersAsync.rejected, (state) => {
-        state.status = 'failed';
+        state.status = UserStatus.ERROR;
       });
   },
 });
 
 export const selectUsers = (state: RootState) => state.users.data;
+export const selectUsersStatus = (state: RootState) => state.users.status;
 
 export default usersSlice.reducer;

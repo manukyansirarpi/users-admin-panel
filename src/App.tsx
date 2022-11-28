@@ -11,6 +11,7 @@ const App = () => {
       <div className={classes.contentWrapper}>
         <Routes>
             <Route path="/" element={<Users />} />
+            <Route path="/users" element={<Users />} />
         </Routes>    
       </div>
     </div>
