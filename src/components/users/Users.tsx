@@ -15,7 +15,6 @@ const Users: React.FC = () => {
     const usersStatus = useAppSelector(selectUsersStatus);
 
     const [sortModel, setSortModel] = useState<GridSortModel | undefined>(undefined);
-
     const [page, setPage] = React.useState(1);
     const [pageSize, setPageSize] = React.useState(10);
 
@@ -48,26 +47,28 @@ const Users: React.FC = () => {
 
     return (
         <div className={classes.usersWrapper}>
-          <DataGrid
-           components={{
-            LoadingOverlay: LinearProgress,
-          }}
-            rows={users}
-            columns={columns}
-            autoHeight
-            checkboxSelection
-            onSortModelChange={handleSortModelChange}
-            sortingMode="server"
-            pagination
-            paginationMode="server"
-            rowCount={100}
-            page={page}
-            pageSize={pageSize}
-            onPageChange={newPage => setPage(newPage)}
-            onPageSizeChange={newPageSize => setPageSize(newPageSize)}
-            rowsPerPageOptions={[10, 50, 100]}
-            loading={usersStatus === UserStatus.LOADING}
-          />
+           <div className={classes.users}>
+            <DataGrid
+              components={{
+                LoadingOverlay: LinearProgress,
+              }}
+              rows={users}
+              columns={columns}
+              autoHeight
+              checkboxSelection
+              onSortModelChange={handleSortModelChange}
+              sortingMode="server"
+              pagination
+              paginationMode="server"
+              rowCount={100}
+              page={page}
+              pageSize={pageSize}
+              onPageChange={newPage => setPage(newPage)}
+              onPageSizeChange={newPageSize => setPageSize(newPageSize)}
+              rowsPerPageOptions={[10, 50, 100]}
+              loading={usersStatus === UserStatus.LOADING}
+            />
+        </div>
         </div>
     );  
 }
