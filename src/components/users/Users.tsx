@@ -8,6 +8,7 @@ import { selectUsers, selectUsersStatus, getUsersAsync, UserStatus } from './Use
 
 import classes from './Users.module.css';
 import { fetchUsersParams } from './usersAPI';
+import UsersPagination from './Pagination';
 
 const Users: React.FC = () => {
 
@@ -15,8 +16,8 @@ const Users: React.FC = () => {
     const usersStatus = useAppSelector(selectUsersStatus);
 
     const [sortModel, setSortModel] = useState<GridSortModel | undefined>(undefined);
-    const [page, setPage] = React.useState(1);
-    const [pageSize, setPageSize] = React.useState(10);
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
 
     const dispatch = useAppDispatch();
 
@@ -45,12 +46,24 @@ const Users: React.FC = () => {
         dispatch(getUsersAsync(params));
       }, [dispatch, sortModel, page, pageSize]);
 
+      const onPageChange = (newPage: number) => {
+        setPage(newPage);
+      }
+
+      const onPageSizeChange = (newPageSize: number) => {
+        setPageSize(newPageSize);
+      }
+
     return (
         <div className={classes.usersWrapper}>
            <div className={classes.users}>
             <DataGrid
               components={{
                 LoadingOverlay: LinearProgress,
+                Pagination: UsersPagination,
+              }}
+              componentsProps={{
+                pagination: {onPageChange: onPageChange, onPageSizeChange: onPageSizeChange, count: pageSize}
               }}
               rows={users}
               columns={columns}
@@ -60,17 +73,14 @@ const Users: React.FC = () => {
               sortingMode="server"
               pagination
               paginationMode="server"
-              rowCount={100}
               page={page}
               pageSize={pageSize}
-              onPageChange={newPage => setPage(newPage)}
-              onPageSizeChange={newPageSize => setPageSize(newPageSize)}
-              rowsPerPageOptions={[10, 50, 100]}
               loading={usersStatus === UserStatus.LOADING}
             />
         </div>
         </div>
     );  
 }
+
 
 export default Users;
