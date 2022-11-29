@@ -1,31 +1,31 @@
-import React, { useEffect, useCallback, useState }  from 'react';
+import React from 'react';
 import Pagination from '@mui/material/Pagination';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 
 interface UsersPaginationProps {
     onPageChange: (newPage: number) => void;
     onPageSizeChange: (newPageSize: number) => void;
-    pageSize: 10 | 50 | 100;
-    count: number;
+    total: number;
+    pageSize: number;
 }
 
-const UsersPagination: React.FC<UsersPaginationProps> = ({onPageChange, onPageSizeChange, count, pageSize}) => {
-    
+const UsersPagination: React.FC<UsersPaginationProps> = ({onPageChange, onPageSizeChange, total, pageSize}) => {
+
     const paginationHandler = (event: React.ChangeEvent<unknown>, value: number) => {
         onPageChange(value);
     }
 
-    const pageSizeHandler = (event: SelectChangeEvent<10 | 20 | 50 | 100>, value: React.ReactNode) => {
-        //  onPageSizeChange(value);
+    const pageSizeHandler = (event: SelectChangeEvent<number>) => {
+        onPageChange(1);
+        onPageSizeChange(event.target.value as number);
     }
   
     return (
         <>
             <Pagination 
-                count={count} 
+                count={total/pageSize}
                 onChange={paginationHandler}
                 variant="outlined" 
                 shape="rounded" />
@@ -34,15 +34,15 @@ const UsersPagination: React.FC<UsersPaginationProps> = ({onPageChange, onPageSi
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={pageSize}
-                    onChange={(e, v) => {}}
+                    onChange={pageSizeHandler}
                 >
                     <MenuItem value={10}>10 / page</MenuItem>
+                    <MenuItem value={20}>20 / page</MenuItem>
                     <MenuItem value={50}>50 / page</MenuItem>
                     <MenuItem value={100}>100 / page</MenuItem>
                 </Select>
             </FormControl>
         </>
-        
     );
   }
 

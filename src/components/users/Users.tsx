@@ -16,8 +16,10 @@ const Users: React.FC = () => {
     const usersStatus = useAppSelector(selectUsersStatus);
 
     const [sortModel, setSortModel] = useState<GridSortModel | undefined>(undefined);
-    const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
+    const [page, setPage] = useState<number>(1);
+    const [pageSize, setPageSize] = useState<number>(10);
+
+    const total = 100; // ideally api would have this value returned
 
     const dispatch = useAppDispatch();
 
@@ -63,7 +65,7 @@ const Users: React.FC = () => {
                 Pagination: UsersPagination,
               }}
               componentsProps={{
-                pagination: {onPageChange: onPageChange, onPageSizeChange: onPageSizeChange, count: pageSize}
+                pagination: {onPageChange: onPageChange, onPageSizeChange: onPageSizeChange, total, pageSize }
               }}
               rows={users}
               columns={columns}
@@ -73,8 +75,7 @@ const Users: React.FC = () => {
               sortingMode="server"
               pagination
               paginationMode="server"
-              page={page}
-              pageSize={pageSize}
+              rowCount={total}
               loading={usersStatus === UserStatus.LOADING}
             />
         </div>
