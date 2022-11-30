@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { fetchUsers, fetchUsersParams } from './usersAPI';
+import { fetchUsers, fetchUsersParams, deleteUser } from './usersAPI';
 
 export interface UserI {
    id: number;
@@ -37,6 +37,13 @@ export const getUsersAsync = createAsyncThunk(
   }
 );
 
+export const deleteUserAsync= createAsyncThunk(
+  'users/deleteUser', 
+  async(userId: number) => {
+    await deleteUser(userId);
+    return userId;  
+  });
+
 export const usersSlice = createSlice({
   name: 'users',
   initialState,
@@ -47,12 +54,21 @@ export const usersSlice = createSlice({
       .addCase(getUsersAsync.pending, (state) => {
         state.status = UserStatus.LOADING
       })
-      .addCase(getUsersAsync.fulfilled, (state, action) => {
+      .addCase(getUsersAsync.fulfilled, (state, action: PayloadAction<UserI[]>) => {
         state.status = UserStatus.IDLE;
         state.data = action.payload;
       })
       .addCase(getUsersAsync.rejected, (state) => {
         state.status = UserStatus.ERROR;
+      })
+      .addCase(deleteUserAsync.pending, (state) => {
+        
+      })
+      .addCase(deleteUserAsync.fulfilled, (state, action: PayloadAction<number>) => {
+        state.data =  state.data.filter(data => data.id !== action.payload)
+      })
+      .addCase(deleteUserAsync.rejected, (state) => {
+       
       });
   },
 });
