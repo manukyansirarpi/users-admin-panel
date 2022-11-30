@@ -1,0 +1,17 @@
+.addUserWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.input {
+    margin-bottom: 20px;
+}
+
+.actionsContainer .button {
+    margin: 0 20px;
+}
+
+.actionsContainer .button a {
+    color: #fff;
+    text-decoration: none;
+}

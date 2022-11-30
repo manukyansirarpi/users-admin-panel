@@ -1,5 +1,4 @@
 import React from 'react';
-import { Routes, Route } from "react-router-dom";
 import SideBar from './components/sideBar/SideBar';
 import Users from './components/users/Users';
 import classes from './App.module.css';
@@ -9,13 +8,11 @@ const App = () => {
     <div className="App">
       <SideBar></SideBar>
       <div className={classes.contentWrapper}>
-        <Routes>
-            <Route path="/" element={<Users />} />
-            <Route path="/users" element={<Users />} />
-        </Routes>    
+        <Users />  
       </div>
     </div>
   );
 }
+
 
 export default App;

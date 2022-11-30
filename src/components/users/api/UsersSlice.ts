@@ -1,17 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../../app/store';
-import { fetchUsers, fetchUsersParams, deleteUser } from './usersAPI';
-
-export interface UserI {
-   id: number;
-   name: string;
-   email: string;
-   photo: string;
-   location: string;
-   registeredDate: string;
-   lastActiveDate: string;
-   disabled: boolean;
-}
+import { RootState } from '../../../app/store';
+import { UserI, DummyUserI } from './UsersI';
+import { fetchUsers, fetchUsersParams, deleteUser, addUser } from './usersAPI';
 
 export enum UserStatus {
   LOADING = "loading",
@@ -44,6 +34,14 @@ export const deleteUserAsync= createAsyncThunk(
     return userId;  
   });
 
+  export const addUserAsync = createAsyncThunk(
+    'users/addUser',
+    async (params: DummyUserI) => {
+      const response = await addUser(params);
+      return response;
+    }
+);
+
 export const usersSlice = createSlice({
   name: 'users',
   initialState,
@@ -61,14 +59,17 @@ export const usersSlice = createSlice({
       .addCase(getUsersAsync.rejected, (state) => {
         state.status = UserStatus.ERROR;
       })
-      .addCase(deleteUserAsync.pending, (state) => {
-        
-      })
       .addCase(deleteUserAsync.fulfilled, (state, action: PayloadAction<number>) => {
         state.data =  state.data.filter(data => data.id !== action.payload)
       })
-      .addCase(deleteUserAsync.rejected, (state) => {
-       
+      .addCase(addUserAsync.pending, (state) => {
+      })
+      .addCase(addUserAsync.fulfilled, (state, action: PayloadAction<UserI>) => {
+        debugger;
+        state.data.push(action.payload);
+      })
+      .addCase(addUserAsync.rejected, (state) => {
+
       });
   },
 });

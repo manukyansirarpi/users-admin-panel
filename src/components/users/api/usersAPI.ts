@@ -1,6 +1,5 @@
-import { UserI } from "./UsersSlice"; 
-
-const ROOT_URL = 'https://brainstorm-interview-task.herokuapp.com'
+import { UserI, DummyUserI } from "./UsersI";
+import { ROOT_URL } from "../../../utils/consts";
 
 export type fetchUsersParams = {
     _page?: string;
@@ -16,7 +15,15 @@ export function fetchUsers(params: fetchUsersParams) : Promise<UserI[]> {
 }
 
 export function deleteUser(userId: number) {
-    fetch(`${ROOT_URL}/users/${userId}`, {
+    return fetch(`${ROOT_URL}/users/${userId}`, {
         method: 'DELETE'
     }).then(res => res);
+}
+
+export function addUser(user: DummyUserI): Promise<UserI> {
+    debugger;
+    return fetch(`${ROOT_URL}/users/`, {
+        method: "POST",
+        body: JSON.stringify(user)
+    }).then((res) => res.json());
 }

@@ -1,0 +1,1 @@
+export const ROOT_URL = 'https://brainstorm-interview-task.herokuapp.com'
