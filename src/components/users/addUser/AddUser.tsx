@@ -10,26 +10,34 @@ import PhotoIcon from '@mui/icons-material/Photo';
 
 import classes from './AddUser.module.css';
 import { addUserAsync } from '../api/UsersSlice';
-import { DummyUserI } from '../api/UsersI';
+import { UserI } from '../api/UsersI';
 
 const AddUser: React.FC = () => {
 
     const dispatch = useAppDispatch();
 
-    const [formInput, setFormInput] = useReducer(
-     (state: DummyUserI, newState: {}) => ({...state, ...newState}) ,
-     { name: "", email: "", photo: "", location: "" }
+    const [userData, setUserData] = useReducer(
+     (state: UserI, newState: {}) => ({...state, ...newState}) ,
+     {  id: 0,
+        name: "", 
+        email: "",
+        photo: "",
+        location: "",
+        registeredDate: "",
+        lastActiveDate: "",
+        disabled: false
+      }
     );
 
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
-      dispatch(addUserAsync(formInput));
+      dispatch(addUserAsync(userData));
     };
   
     const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
       const name = e.target.name;
       const newValue = e.target.value;
-      setFormInput({ [name]: newValue });
+      setUserData({ [name]: newValue });
     };
 
     return (

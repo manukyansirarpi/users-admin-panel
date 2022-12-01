@@ -8,9 +8,10 @@ import MailIcon from '@mui/icons-material/Mail';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
+import Switch from '@mui/material/Switch';
 
 import { useAppSelector, useAppDispatch } from '../../../app/hooks';
-import { selectUsers, selectUsersStatus, UserStatus, getUsersAsync, deleteUserAsync } from '../api/UsersSlice';
+import { selectUsers, selectUsersStatus, UserStatus, getUsersAsync, deleteUserAsync, toggleAvailabilityAsync } from '../api/UsersSlice';
 
 import classes from './UsersList.module.css';
 import { fetchUsersParams } from '../api/usersAPI';
@@ -25,7 +26,7 @@ const UsersList: React.FC = () => {
     const [page, setPage] = useState<number>(1);
     const [pageSize, setPageSize] = useState<number>(10);
 
-    const total = 100; // ideally api would have this value returned
+    const total = 150; // ideally api would have this value returned
     const dispatch = useAppDispatch();
 
     const deleteUser = useCallback(
@@ -33,6 +34,11 @@ const UsersList: React.FC = () => {
       [dispatch],
     );
 
+    const toggleAvailability = useCallback(
+      (id: number) => () => dispatch(toggleAvailabilityAsync(id)),
+      [dispatch],
+    );
+    
     const handleSortModelChange = useCallback((sortModel: GridSortModel) => {
       setSortModel(sortModel);
     }, []);
@@ -70,8 +76,10 @@ const UsersList: React.FC = () => {
           type: 'actions',
           headerName: 'Actions',
           getActions: (params: any) => [
-            <GridActionsCellItem  icon={<DeleteIcon />} label="Delete" onClick={deleteUser(params.id)} />
-          ]
+            <GridActionsCellItem icon={<Switch defaultChecked />} label="Toggle Availability" onClick={toggleAvailability(params.id)} />,
+            <GridActionsCellItem icon={<DeleteIcon />} label="Delete" onClick={deleteUser(params.id)} />
+          ],
+          flex: 1
         }
       ],
       [deleteUser]

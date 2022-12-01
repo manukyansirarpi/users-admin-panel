@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../../app/store';
-import { UserI, DummyUserI } from './UsersI';
-import { fetchUsers, fetchUsersParams, deleteUser, addUser } from './usersAPI';
+import { UserI } from './UsersI';
+import { fetchUsers, fetchUsersParams, deleteUser, addUser, updateUser, toggleUserAvailability } from './usersAPI';
 
 export enum UserStatus {
   LOADING = "loading",
@@ -36,10 +36,26 @@ export const deleteUserAsync= createAsyncThunk(
 
   export const addUserAsync = createAsyncThunk(
     'users/addUser',
-    async (params: DummyUserI) => {
-      const response = await addUser(params);
-      return response;
+    async (params: UserI) => {
+      const res = await addUser(params);
+      return res;
     }
+);
+
+  export const updateUserAsync = createAsyncThunk(
+    'users/updateUser',
+    async (params: UserI) => {
+      const res = await updateUser(params);
+      return res;
+    }
+);
+
+export const toggleAvailabilityAsync = createAsyncThunk(
+  'users/toggleAvailability',
+  async (id: number) => {
+    const res = await toggleUserAvailability(id);
+    return res;
+  }
 );
 
 export const usersSlice = createSlice({
@@ -62,15 +78,17 @@ export const usersSlice = createSlice({
       .addCase(deleteUserAsync.fulfilled, (state, action: PayloadAction<number>) => {
         state.data =  state.data.filter(data => data.id !== action.payload)
       })
-      .addCase(addUserAsync.pending, (state) => {
-      })
       .addCase(addUserAsync.fulfilled, (state, action: PayloadAction<UserI>) => {
-        debugger;
         state.data.push(action.payload);
       })
-      .addCase(addUserAsync.rejected, (state) => {
-
-      });
+      .addCase(updateUserAsync.fulfilled, (state, action: PayloadAction<UserI>) => {
+        debugger;
+        // state.data.push(action.payload);
+      })
+      .addCase(toggleAvailabilityAsync.fulfilled, (state, action: PayloadAction<UserI>) => {
+        debugger;
+        // state.data.push(action.payload);
+      })
   },
 });
 

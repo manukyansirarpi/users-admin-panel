@@ -1,4 +1,4 @@
-import { UserI, DummyUserI } from "./UsersI";
+import { UserI } from "./UsersI";
 import { ROOT_URL } from "../../../utils/consts";
 
 export type fetchUsersParams = {
@@ -20,10 +20,27 @@ export function deleteUser(userId: number) {
     }).then(res => res);
 }
 
-export function addUser(user: DummyUserI): Promise<UserI> {
-    debugger;
+export function addUser(user: UserI): Promise<UserI> {
     return fetch(`${ROOT_URL}/users/`, {
         method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          },
         body: JSON.stringify(user)
+    }).then((res) => res.json());
+}
+
+export function updateUser(user: UserI): Promise<UserI> {
+    return fetch(`${ROOT_URL}/users/${user.id}`, {
+        method: "PUT",
+        body: JSON.stringify(user)
+    }).then((res) => res.json());
+}
+
+export function toggleUserAvailability(id: number): Promise<UserI> {
+    return fetch(`${ROOT_URL}/users/${id}`, {
+        method: "PATCH",
+        // body: JSON.stringify(user)
     }).then((res) => res.json());
 }
