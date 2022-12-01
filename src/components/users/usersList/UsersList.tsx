@@ -14,6 +14,12 @@ import UsersPagination from './Pagination';
 
 import classes from './UsersList.module.css';
 
+const gridStyles = {
+  "& .MuiDataGrid-columnHeaders": {
+    background: '#F1F3F5'
+  }
+}
+
 const UsersList: React.FC = () => {
 
     const users = useAppSelector(selectUsers);
@@ -75,7 +81,8 @@ const UsersList: React.FC = () => {
           getActions: (params: any) => [
             <GridActionsCellItem icon={<Switch defaultChecked />} label="Toggle Availability" onClick={toggleAvailability(params.id)} />,
             <GridActionsCellItem icon={<DeleteIcon />} label="Delete" onClick={deleteUser(params.id)} />
-          ]
+          ],
+          flex: 1,
         }
       ],
       [deleteUser, toggleAvailability]
@@ -106,6 +113,7 @@ const UsersList: React.FC = () => {
             paginationMode="server"
             rowCount={total}
             loading={usersStatus === UserStatus.LOADING}
+            sx={gridStyles}
           />
       </Paper>
     );  
