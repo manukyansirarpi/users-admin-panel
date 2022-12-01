@@ -78,7 +78,7 @@ const UsersList: React.FC = () => {
           ]
         }
       ],
-      [deleteUser]
+      [deleteUser, toggleAvailability]
     );
 
     return (

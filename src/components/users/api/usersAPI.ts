@@ -1,6 +1,5 @@
 import { UserI } from "./UsersI";
 import { ROOT_URL } from "../../../utils/consts";
-import { users } from "./users";
 
 export type fetchUsersParams = {
     _page?: string;
@@ -12,13 +11,12 @@ export type fetchUsersParams = {
 export function fetchUsers(params: fetchUsersParams) : Promise<UserI[]> { 
     let url = new URL(`${ROOT_URL}/users`);
     url.search = new URLSearchParams(params).toString();
-    // return fetch(url).then((res) => res.json()); 
     return fetch(url, {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
           },
-    }).then((res) => users).catch(e => users);
+    }).then((res) => res.json()).catch(e => e);
 }
 
 export function deleteUser(userId: number) {
@@ -28,7 +26,7 @@ export function deleteUser(userId: number) {
             Accept: "application/json",
             "Content-Type": "application/json"
           },
-    }).then(res => res);
+    }).then(res => res).catch(e => e);;
 }
 
 export function addUser(user: UserI): Promise<UserI> {
@@ -40,7 +38,7 @@ export function addUser(user: UserI): Promise<UserI> {
             Accept: "application/json",
             "Content-Type": "application/json"
           },
-    }).then((res) => res.json());
+    }).then((res) => res.json()).catch(e => e);;
 }
 export function updateUser(user: UserI): Promise<UserI> {
     return fetch(`${ROOT_URL}/users/${user.id}`, {
@@ -50,7 +48,7 @@ export function updateUser(user: UserI): Promise<UserI> {
             Accept: "application/json",
             "Content-Type": "application/json"
           },
-    }).then((res) => res.json());
+    }).then((res) => res.json()).catch(e => e);;
 }
 
 export function toggleUserAvailability(id: number): Promise<UserI> {
@@ -61,5 +59,5 @@ export function toggleUserAvailability(id: number): Promise<UserI> {
             "Content-Type": "application/json"
           },
         // body: JSON.stringify(user)
-    }).then((res) => res.json());
+    }).then((res) => res.json()).catch(e => e);;
 }

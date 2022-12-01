@@ -1,14 +1,14 @@
 import React, { useReducer } from 'react';
 import { Link } from "react-router-dom";
 
-import { FormControl, FormGroup, Paper, OutlinedInput, Button, Container } from '@mui/material';
+import { FormControl, FormGroup, Paper, OutlinedInput, Button, Container, Stack } from '@mui/material';
 import PhotoIcon from '@mui/icons-material/Photo';
 
 import { useAppDispatch } from '../../../app/hooks';
 import { addUserAsync } from '../api/UsersSlice';
 import { UserI } from '../api/UsersI';
 
-import classes from './AddUser.module.css';
+import Input from '../../../ui/Input';
 
 const AddUser: React.FC = () => {
 
@@ -39,29 +39,23 @@ const AddUser: React.FC = () => {
     };
 
     return (
-      <Paper className={classes.addUserWrapper}>
+      <Paper sx={{ width: '1100px', height: '600px', margin: '20px 40px'}}>
         <Container maxWidth="sm">
           <form>
             <FormGroup>
+              <Input name="name" value={userData.name}  placeholder="User Name" onChange={handleInput}></Input>
               <FormControl>
-                <OutlinedInput name="name" size="small" placeholder="User Name" className={classes.input} onChange={handleInput}/>
-              </FormControl>
-              <FormControl>
-                <Button  variant="outlined" component="label">  <PhotoIcon /> Photo
+                  <Button variant="outlined" component="label" sx={{ width: '160px'}}> <PhotoIcon /> Photo
                   <input  type="file"  hidden  />
                 </Button>
               </FormControl>
-              <FormControl>
-                <OutlinedInput name="email"  size="small" placeholder="Email" className={classes.input} onChange={handleInput}/>
-              </FormControl>
-              <FormControl>
-                <OutlinedInput name="location"  size="small" placeholder="Location" className={classes.input} onChange={handleInput}/>
-              </FormControl>
+              <Input name="email" value={userData.email}  placeholder="Email" onChange={handleInput}></Input>
+              <Input name="location" value={userData.location}  placeholder="Location" onChange={handleInput}></Input>
             </FormGroup>
-            <FormGroup row>
-              <Button className={classes.button} variant="contained" onClick={handleSubmit}>Save</Button>
-                <Button className={classes.button} variant="contained"> <Link to="/">Cancel</Link></Button>
-            </FormGroup>
+            <Stack direction="row" justifyContent="flex-start">
+              <Button variant="contained" onClick={handleSubmit}>Save</Button>
+              <Button variant="contained"  sx={{marginLeft: '20px',  "& a": {  color: '#fff', textDecoration: 'none'  }}}><Link to="/">Cancel</Link></Button>
+            </Stack>
           </form>
         </Container>
       </Paper>
