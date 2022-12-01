@@ -1,6 +1,6 @@
 .addUserWrapper {
-    display: flex;
-    flex-direction: column;
+    width: 1141px;
+    height: 611px;
 }
 
 .input {

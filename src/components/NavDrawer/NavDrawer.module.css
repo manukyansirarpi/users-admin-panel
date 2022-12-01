@@ -1,0 +1,24 @@
+.listItem { 
+    color: #fff;
+    height: 40px;
+}
+.listItem.selected { 
+    background: #1F2430;
+}
+.listItem a { 
+    color: #fff;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    text-decoration: none;
+}
+.listItem .icon {
+    width: 17px;
+    height: 17px;
+    margin: 0 30px;
+}
+.listItem:hover { 
+    cursor: pointer;
+}

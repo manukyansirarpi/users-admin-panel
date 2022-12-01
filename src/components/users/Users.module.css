@@ -1,3 +1,7 @@
+.contentWrapper {
+    margin-left: 240px;
+    margin-top: 80px;
+}
 .usersWrapper {
     display: flex;
     height: 100%;

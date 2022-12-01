@@ -2,19 +2,17 @@ import React, { useEffect, useCallback, useState, useMemo }  from 'react';
 import { Link } from "react-router-dom";
 
 import { DataGrid, GridColDef, GridSortModel, GridRenderCellParams, GridActionsCellItem } from '@mui/x-data-grid';
-import LinearProgress from '@mui/material/LinearProgress';
-import Avatar from "@mui/material/Avatar";
-import MailIcon from '@mui/icons-material/Mail';
+import { LinearProgress, Avatar, Divider, Box , Paper, Switch} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Divider from '@mui/material/Divider';
-import Box from '@mui/material/Box';
+import MailIcon from '@mui/icons-material/Mail';
 
 import { useAppSelector, useAppDispatch } from '../../../app/hooks';
-import { selectUsers, selectUsersStatus, UserStatus, getUsersAsync, deleteUserAsync } from '../api/UsersSlice';
+import { selectUsers, selectUsersStatus, UserStatus, getUsersAsync, deleteUserAsync, toggleAvailabilityAsync } from '../api/UsersSlice';
+import { fetchUsersParams } from '../api/usersAPI';
+
+import UsersPagination from './Pagination';
 
 import classes from './UsersList.module.css';
-import { fetchUsersParams } from '../api/usersAPI';
-import UsersPagination from './Pagination';
 
 const UsersList: React.FC = () => {
 
@@ -30,6 +28,11 @@ const UsersList: React.FC = () => {
 
     const deleteUser = useCallback(
       (id: number) => () => dispatch(deleteUserAsync(id)),
+      [dispatch],
+    );
+
+    const toggleAvailability = useCallback(
+      (id: number) => () => dispatch(toggleAvailabilityAsync(id)),
       [dispatch],
     );
 
@@ -70,7 +73,8 @@ const UsersList: React.FC = () => {
           type: 'actions',
           headerName: 'Actions',
           getActions: (params: any) => [
-            <GridActionsCellItem  icon={<DeleteIcon />} label="Delete" onClick={deleteUser(params.id)} />
+            <GridActionsCellItem icon={<Switch defaultChecked />} label="Toggle Availability" onClick={toggleAvailability(params.id)} />,
+            <GridActionsCellItem icon={<DeleteIcon />} label="Delete" onClick={deleteUser(params.id)} />
           ]
         }
       ],
@@ -78,32 +82,32 @@ const UsersList: React.FC = () => {
     );
 
     return (
-      <div className={classes.users}>
-          <Box role="presentation" className={classes.addUser} >
-              all users
-              <Divider />
-              <Link to="/add">Add user</Link>
-          </Box>
-        <DataGrid
-          components={{
-            LoadingOverlay: LinearProgress,
-            Pagination: UsersPagination,
-          }}
-          componentsProps={{
-            pagination: {onPageChange: onPageChange, onPageSizeChange: onPageSizeChange, total, pageSize }
-          }}
-          rows={users}
-          columns={columns}
-          autoHeight
-          checkboxSelection
-          onSortModelChange={handleSortModelChange}
-          sortingMode="server"
-          pagination
-          paginationMode="server"
-          rowCount={total}
-          loading={usersStatus === UserStatus.LOADING}
-        />
-      </div>
+        <Paper className={classes.users} >
+            <Box role="presentation" className={classes.addUser} >
+                all users
+                <Divider />
+                <Link to="/add">Add user</Link>
+            </Box>
+          <DataGrid
+            components={{
+              LoadingOverlay: LinearProgress,
+              Pagination: UsersPagination,
+            }}
+            componentsProps={{
+              pagination: {onPageChange: onPageChange, onPageSizeChange: onPageSizeChange, total, pageSize }
+            }}
+            rows={users}
+            columns={columns}
+            autoHeight
+            checkboxSelection
+            onSortModelChange={handleSortModelChange}
+            sortingMode="server"
+            pagination
+            paginationMode="server"
+            rowCount={total}
+            loading={usersStatus === UserStatus.LOADING}
+          />
+      </Paper>
     );  
 }
 

@@ -9,12 +9,14 @@ import classes from './Users.module.css';
 const Users: React.FC = () => {
 
     return (
-        <div className={classes.usersWrapper}>
-            <Routes>
-                <Route path="/" element={<UsersList />} />
-                <Route path="/add" element={<AddUser />} />
-            </Routes>    
-        </div>
+        <main className={classes.contentWrapper}>
+            <div className={classes.usersWrapper}>
+                <Routes>
+                    <Route path="/" element={<UsersList />} />
+                    <Route path="/add" element={<AddUser />} />
+                </Routes>    
+            </div>
+        </main>
     );  
 }
 

@@ -1,8 +1,6 @@
-import React from 'react';
-import Pagination from '@mui/material/Pagination';
+import React, { Fragment } from 'react';
+import { Pagination, MenuItem, FormControl } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 
 interface UsersPaginationProps {
     onPageChange: (newPage: number) => void;
@@ -23,7 +21,7 @@ const UsersPagination: React.FC<UsersPaginationProps> = ({onPageChange, onPageSi
     }
   
     return (
-        <>
+        <Fragment>
             <Pagination 
                 count={total/pageSize}
                 onChange={paginationHandler}
@@ -42,7 +40,7 @@ const UsersPagination: React.FC<UsersPaginationProps> = ({onPageChange, onPageSi
                     <MenuItem value={100}>100 / page</MenuItem>
                 </Select>
             </FormControl>
-        </>
+        </Fragment>
     );
   }
 
