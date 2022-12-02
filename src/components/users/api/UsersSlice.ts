@@ -78,14 +78,11 @@ export const usersSlice = createSlice({
         state.data =  state.data.filter(data => data.id !== action.payload)
       })
       .addCase(addUserAsync.fulfilled, (state, action: PayloadAction<UserI>) => {
-        debugger;
         state.data.push(action.payload);
       })
       .addCase(updateUserAsync.fulfilled, (state, action: PayloadAction<UserI>) => {
-        debugger;
       })
       .addCase(toggleAvailabilityAsync.fulfilled, (state, action: PayloadAction<UserI>) => {
-        debugger;
       })
   },
 });

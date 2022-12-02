@@ -1,4 +1,5 @@
 import React, { useReducer } from 'react';
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import { FormControl, FormGroup, Paper, OutlinedInput, Button, Container, Stack } from '@mui/material';
@@ -13,6 +14,7 @@ import Input from '../../../ui/Input';
 const AddUser: React.FC = () => {
 
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const [userData, setUserData] = useReducer(
      (state: UserI, newState: {}) => ({...state, ...newState}) ,
@@ -30,6 +32,7 @@ const AddUser: React.FC = () => {
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
       dispatch(addUserAsync(userData));
+      navigate('/');
     };
   
     const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {

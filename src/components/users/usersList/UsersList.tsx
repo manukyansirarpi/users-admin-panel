@@ -89,7 +89,7 @@ const UsersList: React.FC = () => {
     );
 
     return (
-        <Paper className={classes.users} >
+        <div className={classes.users} >
             <Box role="presentation" className={classes.addUser} >
                 all users
                 <Divider />
@@ -115,7 +115,7 @@ const UsersList: React.FC = () => {
             loading={usersStatus === UserStatus.LOADING}
             sx={gridStyles}
           />
-      </Paper>
+      </div>
     );  
 }
 
