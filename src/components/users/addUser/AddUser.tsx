@@ -1,8 +1,8 @@
-import React, { useReducer,useEffect, useMemo } from 'react';
+import React, { useReducer,useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-import { FormControl, FormGroup, Paper, OutlinedInput, Button, Container, Stack } from '@mui/material';
+import { FormControl, FormGroup, Paper, Button, Container, Stack } from '@mui/material';
 import PhotoIcon from '@mui/icons-material/Photo';
 
 import { useAppDispatch } from '../../../app/hooks';

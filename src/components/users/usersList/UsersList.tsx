@@ -1,19 +1,19 @@
 import React, { useEffect, useCallback, useState, useMemo }  from 'react';
 import { Link } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 
 import { DataGrid, GridColDef, GridSortModel, GridRenderCellParams, GridActionsCellItem } from '@mui/x-data-grid';
-import { LinearProgress, Avatar, Divider, Box , Paper, Switch} from '@mui/material';
+import { LinearProgress, Avatar, Divider, Box, Switch } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MailIcon from '@mui/icons-material/Mail';
 
 import { useAppSelector, useAppDispatch } from '../../../app/hooks';
 import { selectUsers, selectUsersStatus, UserStatus, getUsersAsync, deleteUserAsync, toggleAvailabilityAsync } from '../api/UsersSlice';
 import { fetchUsersParams } from '../api/usersAPI';
+import { UserI } from '../api/UsersI';
 
 import UsersPagination from './Pagination';
-
 import classes from './UsersList.module.css';
-import { UserI } from '../api/UsersI';
 
 const gridStyles = {
   "& .MuiDataGrid-columnHeaders": {
@@ -26,9 +26,14 @@ const UsersList: React.FC = () => {
     const users = useAppSelector(selectUsers);
     const usersStatus = useAppSelector(selectUsersStatus);
 
+    const location = useLocation();
+    const query = new URLSearchParams(location.search);
+    const pageNum = parseInt(query.get('page') || '1', 10);
+    const limit = parseInt(query.get('limit') || '10', 10);
+
     const [sortModel, setSortModel] = useState<GridSortModel | undefined>(undefined);
-    const [page, setPage] = useState<number>(1);
-    const [pageSize, setPageSize] = useState<number>(10);
+    const [page, setPage] = useState<number>(pageNum);
+    const [pageSize, setPageSize] = useState<number>(limit);
 
     const total = 120; // ideally api would have this value returned
     const dispatch = useAppDispatch();
@@ -58,7 +63,7 @@ const UsersList: React.FC = () => {
         params._order = sortModel.map(model => model.sort).join(',');
       }
       dispatch(getUsersAsync(params));
-    }, [dispatch, sortModel, page, pageSize]);
+    }, [dispatch, sortModel, page, pageSize, pageNum]);
 
     const onPageChange = (newPage: number) => {
       setPage(newPage);
