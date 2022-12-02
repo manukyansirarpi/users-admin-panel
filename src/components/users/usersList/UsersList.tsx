@@ -13,6 +13,7 @@ import { fetchUsersParams } from '../api/usersAPI';
 import UsersPagination from './Pagination';
 
 import classes from './UsersList.module.css';
+import { UserI } from '../api/UsersI';
 
 const gridStyles = {
   "& .MuiDataGrid-columnHeaders": {
@@ -29,7 +30,7 @@ const UsersList: React.FC = () => {
     const [page, setPage] = useState<number>(1);
     const [pageSize, setPageSize] = useState<number>(10);
 
-    const total = 100; // ideally api would have this value returned
+    const total = 120; // ideally api would have this value returned
     const dispatch = useAppDispatch();
 
     const deleteUser = useCallback(
@@ -38,7 +39,8 @@ const UsersList: React.FC = () => {
     );
 
     const toggleAvailability = useCallback(
-      (id: number) => () => dispatch(toggleAvailabilityAsync(id)),
+      (params: UserI) => () => { 
+        return dispatch(toggleAvailabilityAsync({id: params.id, disable: !params.disabled}))},
       [dispatch],
     );
 
@@ -79,7 +81,7 @@ const UsersList: React.FC = () => {
           type: 'actions',
           headerName: 'Actions',
           getActions: (params: any) => [
-            <GridActionsCellItem icon={<Switch defaultChecked />} label="Toggle Availability" onClick={toggleAvailability(params.id)} />,
+            <GridActionsCellItem icon={<Switch checked={params.row.disabled}/>} label="Toggle Availability" onClick={toggleAvailability(params.row)} />,
             <GridActionsCellItem icon={<DeleteIcon />} label="Delete" onClick={deleteUser(params.id)} />
           ],
           flex: 1,
@@ -105,7 +107,7 @@ const UsersList: React.FC = () => {
             }}
             rows={users}
             columns={columns}
-            autoHeight
+            autoHeight 
             checkboxSelection
             onSortModelChange={handleSortModelChange}
             sortingMode="server"

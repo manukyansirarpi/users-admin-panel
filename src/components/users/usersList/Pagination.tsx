@@ -19,11 +19,11 @@ const UsersPagination: React.FC<UsersPaginationProps> = ({onPageChange, onPageSi
         onPageChange(1);
         onPageSizeChange(event.target.value as number);
     }
-  
+
     return (
         <Fragment>
             <Pagination 
-                count={total/pageSize}
+                count={Math.ceil(total/pageSize)}
                 onChange={paginationHandler}
                 variant="outlined" 
                 shape="rounded" />

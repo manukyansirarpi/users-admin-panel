@@ -42,13 +42,13 @@ export function updateUser(user: UserI): Promise<UserI> {
     }).then((res) => res.json()).catch(e => console.log(e));
 }
 
-export function toggleUserAvailability(id: number): Promise<UserI> {
+export function toggleUserAvailability(id: number, disable: boolean) : Promise<UserI> {
     return fetch(`${ROOT_URL}/users/${id}`, {
         method: "PATCH",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
           },
-        // body: JSON.stringify(user)
+        body: JSON.stringify({ disabled: disable})
     }).then((res) => res.json()).catch(e => console.log(e));
 }

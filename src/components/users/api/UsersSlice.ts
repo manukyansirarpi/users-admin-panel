@@ -51,8 +51,8 @@ export const deleteUserAsync= createAsyncThunk(
 
 export const toggleAvailabilityAsync = createAsyncThunk(
   'users/toggleAvailability',
-  async (id: number) => {
-    const res = await toggleUserAvailability(id);
+  async (params : {id: number, disable: boolean}) => {
+    const res = await toggleUserAvailability(params.id, params.disable);
     return res;
   }
 );
@@ -83,7 +83,12 @@ export const usersSlice = createSlice({
       .addCase(updateUserAsync.fulfilled, (state, action: PayloadAction<UserI>) => {
       })
       .addCase(toggleAvailabilityAsync.fulfilled, (state, action: PayloadAction<UserI>) => {
-      })
+        state.data.forEach((user, index) => {
+          if(user.id === action.payload.id) {
+            state.data[index] = action.payload;
+          }
+        });
+      });
   },
 });
 
