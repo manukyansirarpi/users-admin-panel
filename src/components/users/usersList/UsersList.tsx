@@ -1,7 +1,5 @@
 import React, { useEffect, useCallback, useState, useMemo }  from 'react';
-import { Link } from "react-router-dom";
-import { useLocation } from 'react-router-dom';
-
+import { useNavigate, useLocation } from "react-router-dom";
 import { DataGrid, GridColDef, GridSortModel, GridRenderCellParams, GridActionsCellItem } from '@mui/x-data-grid';
 import { LinearProgress, Avatar, Divider, Box, Switch } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -37,6 +35,11 @@ const UsersList: React.FC = () => {
 
     const total = 120; // ideally api would have this value returned
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
+    const addUserRoute = (url: string) => {
+      navigate(url, {state: {urlParams : location.search} });
+    }
 
     const deleteUser = useCallback(
       (id: number) => () => dispatch(deleteUserAsync(id)),
@@ -80,8 +83,11 @@ const UsersList: React.FC = () => {
           headerName: 'Name',
           flex: 1,
           renderCell: (params:  GridRenderCellParams) =>  {
-            let link = `/add/${params.row.id}` ;
-            return <Link to={link}>{params.row.name}</Link>
+            let link = `/add/${params.row.id}`;
+            return  <a href="" onClick={(e) => { 
+              e.preventDefault();
+              addUserRoute(link);
+            }}>{params.row.name}</a>
           }
         },
         { field: 'location', headerName: 'Location', flex: 1},
@@ -99,7 +105,7 @@ const UsersList: React.FC = () => {
           flex: 1,
         }
       ],
-      [deleteUser, toggleAvailability]
+      [deleteUser, toggleAvailability, addUserRoute]
     );
 
     return (
@@ -107,7 +113,7 @@ const UsersList: React.FC = () => {
             <Box role="presentation" className={classes.addUser} >
                 all users
                 <Divider />
-                <Link to="/add">Add user</Link>
+                <button onClick={() => { addUserRoute('/add') }}>Add user</button>
             </Box>
           <DataGrid
             components={{

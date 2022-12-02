@@ -1,6 +1,5 @@
 import React, { useReducer,useEffect } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 import { FormControl, FormGroup, Paper, Button, Container, Stack } from '@mui/material';
 import PhotoIcon from '@mui/icons-material/Photo';
@@ -16,6 +15,8 @@ const AddUser: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const params = useParams();
+    const location = useLocation();
+    console.log(location.state)
 
     let userId = params.userId;
     
@@ -47,8 +48,12 @@ const AddUser: React.FC = () => {
       } else {
         dispatch(addUserAsync(userData));
       }
-      navigate('/');
+      cancelHandler();
     };
+
+    const cancelHandler = () => {
+      navigate(`/${location.state.urlParams}`);
+    }
   
     const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
       const name = e.target.name;
@@ -72,7 +77,7 @@ const AddUser: React.FC = () => {
             </FormGroup>
             <Stack direction="row" justifyContent="flex-start">
               <Button variant="contained" onClick={handleSubmit}>Save</Button>
-              <Button variant="contained"  sx={{marginLeft: '20px',  "& a": {  color: '#fff', textDecoration: 'none'  }}}><Link to="/">Cancel</Link></Button>
+              <Button variant="contained"  onClick={cancelHandler}>Cancel</Button>
             </Stack>
           </form>
         </Container>
