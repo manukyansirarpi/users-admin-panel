@@ -71,7 +71,14 @@ const UsersList: React.FC = () => {
     const columns: GridColDef[]  = useMemo(
       () => [
         { field: 'photo', headerName: 'Photo',  flex: 1, renderCell: (params:  GridRenderCellParams) => <Avatar src={params.value} />},
-        { field: 'name', headerName: 'Name',  flex: 1 },
+        { field: 'name', 
+          headerName: 'Name',
+          flex: 1,
+          renderCell: (params:  GridRenderCellParams) =>  {
+            let link = `/add/${params.row.id}` ;
+            return <Link to={link}>{params.row.name}</Link>
+          }
+        },
         { field: 'location', headerName: 'Location', flex: 1},
         { field: 'registeredDate',  type: 'dateTime', valueGetter: ({ value }) => value && (new Date(value)).toLocaleDateString('en-US'), headerName: 'Registered Date',  flex: 1},
         { field: 'lastActiveDate',  type: 'dateTime', valueGetter: ({ value }) => value && (new Date(value)).toLocaleDateString('en-US'),  headerName: 'Last Active Date',  flex: 1 },

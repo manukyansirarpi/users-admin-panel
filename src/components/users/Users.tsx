@@ -14,6 +14,7 @@ const Users: React.FC = () => {
                 <Routes>
                     <Route path="/" element={<UsersList />} />
                     <Route path="/add" element={<AddUser />} />
+                    <Route path="/add/:userId" element={<AddUser />} />
                 </Routes>    
             </div>
         </main>

@@ -1,12 +1,12 @@
-import React, { useReducer } from 'react';
-import { useNavigate } from "react-router-dom";
+import React, { useReducer,useEffect, useMemo } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import { FormControl, FormGroup, Paper, OutlinedInput, Button, Container, Stack } from '@mui/material';
 import PhotoIcon from '@mui/icons-material/Photo';
 
 import { useAppDispatch } from '../../../app/hooks';
-import { addUserAsync } from '../api/UsersSlice';
+import { addUserAsync, updateUserAsync , getUserData} from '../api/UsersSlice';
 import { UserI } from '../api/UsersI';
 
 import Input from '../../../ui/Input';
@@ -15,23 +15,38 @@ const AddUser: React.FC = () => {
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const params = useParams();
+
+    let userId = params.userId;
+    
+    useEffect(()=>{
+      if(userId) {
+        getUserData(parseInt(userId)).then((user) => {
+          setUserData(user);
+        });
+      }
+    }, [userId]);
 
     const [userData, setUserData] = useReducer(
      (state: UserI, newState: {}) => ({...state, ...newState}) ,
      {  id: 0,
-      name: "", 
-      email: "",
-      photo: "",
-      location: "",
-      registeredDate: "",
-      lastActiveDate: "",
-      disabled: false
-    }
+        name: "", 
+        email: "",
+        photo: "",
+        location: "",
+        registeredDate: "",
+        lastActiveDate: "",
+        disabled: false
+      }
     );
 
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
-      dispatch(addUserAsync(userData));
+      if(userId) {
+        dispatch(updateUserAsync(userData));
+      } else {
+        dispatch(addUserAsync(userData));
+      }
       navigate('/');
     };
   

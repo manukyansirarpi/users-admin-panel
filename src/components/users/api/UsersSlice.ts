@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../../app/store';
 import { UserI } from './UsersI';
-import { fetchUsers, fetchUsersParams, deleteUser, addUser, toggleUserAvailability, updateUser } from './usersAPI';
+import { fetchUsers, fetchUsersParams, deleteUser, addUser, toggleUserAvailability, updateUser, getUser } from './usersAPI';
 
 export enum UserStatus {
   LOADING = "loading",
@@ -26,6 +26,11 @@ export const getUsersAsync = createAsyncThunk(
     return response;
   }
 );
+
+export const getUserData = async (id: number) => {
+    const response = await getUser(id);
+    return response;
+  };
 
 export const deleteUserAsync= createAsyncThunk(
   'users/deleteUser', 
@@ -81,6 +86,11 @@ export const usersSlice = createSlice({
         state.data.push(action.payload);
       })
       .addCase(updateUserAsync.fulfilled, (state, action: PayloadAction<UserI>) => {
+        state.data.forEach((user, index) => {
+          if(user.id === action.payload.id) {
+            state.data[index] = action.payload;
+          }
+        });
       })
       .addCase(toggleAvailabilityAsync.fulfilled, (state, action: PayloadAction<UserI>) => {
         state.data.forEach((user, index) => {
