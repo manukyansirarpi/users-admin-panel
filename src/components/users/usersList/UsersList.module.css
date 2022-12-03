@@ -23,7 +23,7 @@
     margin-bottom: 50px;
     flex-grow: 1;
 }
-.bar .button {
+.bar .button, .bar .button:hover {
     width: 114px;
     height: 36px;
     background: #407EFF;
