@@ -52,3 +52,12 @@ export function toggleUserAvailability(id: number, disable: boolean) : Promise<U
         body: JSON.stringify({ disabled: disable})
     }).then((res) => res.json()).catch(e => console.log(e));
 }
+
+export function uploadPhoto(formData: FormData) : Promise<{url: string}> {
+    return fetch(`${ROOT_URL}/images`, {
+        method: "POST",
+        body: formData
+    }).then((res) => {
+        return res.json();
+    }).catch(e => console.log(e));
+}

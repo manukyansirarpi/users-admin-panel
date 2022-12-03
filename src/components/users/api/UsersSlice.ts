@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../../app/store';
 import { UserI } from './UsersI';
-import { fetchUsers, fetchUsersParams, deleteUser, addUser, toggleUserAvailability, updateUser, getUser } from './usersAPI';
+import { fetchUsers, fetchUsersParams, deleteUser, addUser, toggleUserAvailability, updateUser, getUser, uploadPhoto } from './usersAPI';
 
 export enum UserStatus {
   LOADING = "loading",
@@ -61,6 +61,12 @@ export const toggleAvailabilityAsync = createAsyncThunk(
     return res;
   }
 );
+
+export const uploadPhotoAsync = 
+  async (formData : FormData) => {
+    const res = await uploadPhoto(formData);
+    return res;
+  }
 
 export const usersSlice = createSlice({
   name: 'users',
