@@ -1,13 +1,12 @@
-import React, { useReducer,useEffect, useState } from 'react';
+import React, { useReducer,useEffect, useCallback } from 'react';
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-
-import { FormControl, FormGroup, Paper, Button, Container, Stack, LinearProgress } from '@mui/material';
-import PhotoIcon from '@mui/icons-material/Photo';
+import { FormGroup, Paper, Button, Container, Stack } from '@mui/material';
 
 import { useAppDispatch } from '../../../app/hooks';
-import { addUserAsync, updateUserAsync , getUserData, uploadPhotoAsync} from '../api/UsersSlice';
+import { addUserAsync, updateUserAsync , getUserData } from '../api/UsersSlice';
 import { UserI } from '../api/UsersI';
 
+import PhotoUpload from './PhotoUpload';
 import Input from '../../../ui/Input';
 import classes from './AddUser.module.css';
 
@@ -49,9 +48,6 @@ const AddUser: React.FC = () => {
     const location = useLocation();
 
     let userId = params.userId;
-
-    const [photo, setPhoto] = useState<File>();
-    const [photoLoading, setPphotoLoading] = useState<boolean>(false);
     const [userData, setUserData] = useReducer((state: UserFormDataI, newState: {}) => ({...state, ...newState}), userInitialState );
     
     useEffect(()=>{
@@ -62,28 +58,9 @@ const AddUser: React.FC = () => {
       }
     }, [userId]);
 
-    useEffect(()=>{
-      if(photo) {
-        const formData = new FormData();
-        formData.append( "file", photo, photo.name );
-        setPphotoLoading(true);
-        uploadPhotoAsync(formData).then( data=> {
-          setUserData({'photo': data.url});
-          setPphotoLoading(false);
-        });
-      }
-    }, [photo, dispatch]);
-
-    const onPhotoInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if(e.target.files && e.target.files[0]){
-        setPhoto(e.target.files[0]);
-      }
-    }
-
-    const onPhotoInputClick = ( e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-      const element = e.target as HTMLInputElement
-      element.value = ''
-    }
+    const onPhotoAdded = useCallback((photo: string) => {
+      setUserData({'photo': photo});
+    }, []);
 
     const cancelHandler = () => {
       navigate(location.state?.urlParams? `/${location.state?.urlParams}` : '/');
@@ -131,13 +108,7 @@ const AddUser: React.FC = () => {
           <form>
             <FormGroup>
               <Input name="name" value={userData.name.value} error={userData.name.error} helperText={userData.name.error && userData.name.errorMessage} placeholder="User Name" onChange={handleInput}></Input>
-              <FormControl>
-                  {photoLoading && <LinearProgress className={classes.avatar}  />}
-                  {userData && userData.photo && !photoLoading && <img className={classes.avatar} alt='User Avatar' src ={userData.photo} />}
-                  <Button variant="outlined" component="label" sx={{ width: '160px'}}> <PhotoIcon /> Photo
-                  <input hidden type="file" onClick={onPhotoInputClick} onChange={onPhotoInputChange} accept="image/png, image/gif, image/jpeg"/>
-                </Button>
-              </FormControl>
+              <PhotoUpload onPhotoAdded={onPhotoAdded} userPhoto={userData.photo}></PhotoUpload>
               <Input name="email" value={userData.email.value} error={userData.email.error}  helperText={userData.email.error && userData.email.errorMessage} placeholder="Email" onChange={handleInput}></Input>
               <Input name="location" value={userData.location}  placeholder="Location" onChange={handleInput}></Input>
             </FormGroup>
