@@ -15,7 +15,8 @@ const drawerStyles = {
     },
     drawerPaper: {
         width: drawerWidth,
-        background: '#272D3E'
+        background: '#272D3E',
+        paddingTop: '80px'
     }
 }
 
