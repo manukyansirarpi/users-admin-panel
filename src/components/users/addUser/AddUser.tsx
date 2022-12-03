@@ -90,33 +90,23 @@ const AddUser: React.FC = () => {
     }
 
     const isFormValid = () => {
-      if (!userData.name.value || !userData.email.value) {
-        if (!userData.name.value) {
-          setUserData({'name': {...userData.name, ...{error: true}} });
-        }  
-        if (!userData.email.value) {
-          setUserData({ 'email': {...userData.email, ...{error: true}} });
-        }  
-        return false;
+      let valid = true;
+      if (!userData.name.value) {
+        setUserData({'name': {...userData.name, ...{error: true}} });
+        valid = false;
+      }  
+      if (!userData.email.value) {
+        setUserData({ 'email': {...userData.email, ...{error: true}} });
+        valid = false;
       }
-      return true;
+      return valid;
     }
   
     const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
       const name = e.target.name;
       const newValue = e.target.value;
-      if(name === 'name') {
-        if(!newValue.trim().length) {
-          setUserData({'name': {...userData.name, value: newValue, error: true} });
-        } else {
-          setUserData({'name': {...userData.name, value: newValue, error: false} });
-        }
-      } else if(name === 'email') {
-        if(!newValue.trim().length) {
-          setUserData({'email': {...userData.email,value: newValue, error: true} });
-        } else {
-          setUserData({'email': {...userData.email, value: newValue, error: false} });
-        }
+      if(name === 'name' || name === 'email') {
+        setUserData({[name]: {...userData.name, value: newValue, error: !newValue.trim().length} });
       } else {
         setUserData({ [name]: newValue });
       }
@@ -124,9 +114,7 @@ const AddUser: React.FC = () => {
 
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
-      if (!isFormValid()) {
-        return;
-      }  else {
+      if (isFormValid()) {
         const newData =  {...userData,  name: userData.name.value, email: userData.email.value};
         if(userId) {
           dispatch(updateUserAsync(newData));
