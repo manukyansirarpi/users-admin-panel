@@ -1,3 +1,4 @@
+// Fake data
 export const users = [
     {
         "id": 261750412017102,

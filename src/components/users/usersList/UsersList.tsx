@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useState, useMemo }  from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { DataGrid, GridColDef, GridSortModel, GridRenderCellParams, GridActionsCellItem } from '@mui/x-data-grid';
-import { LinearProgress, Avatar, Divider, Box, Switch } from '@mui/material';
+import { LinearProgress, Avatar, Divider, Typography, Switch, Button, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MailIcon from '@mui/icons-material/Mail';
 
@@ -12,6 +12,7 @@ import { UserI } from '../api/UsersI';
 
 import UsersPagination from './Pagination';
 import classes from './UsersList.module.css';
+import { Stack } from '@mui/system';
 
 const gridStyles = {
   "& .MuiDataGrid-columnHeaders": {
@@ -110,11 +111,11 @@ const UsersList: React.FC = () => {
 
     return (
         <div className={classes.users} >
-            <Box role="presentation" className={classes.addUser} >
-                all users
-                <Divider />
-                <button onClick={() => { addUserRoute('/add') }}>Add user</button>
-            </Box>
+          <Stack direction="row" className={classes.bar}>
+            <Typography className={classes.title}> All users</Typography>
+            <Divider className={classes.divider}/>
+            <Button className={classes.button}  onClick={() => {addUserRoute('/add')}}>Add user</Button> 
+          </Stack>
           <DataGrid
             components={{
               LoadingOverlay: LinearProgress,

@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
-
 import { Pagination, MenuItem, FormControl } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
@@ -46,7 +45,7 @@ const UsersPagination: React.FC<UsersPaginationProps> = ({onPageChange, onPageSi
                   )}
                 variant="outlined" 
                 shape="rounded" />
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+            <FormControl sx={{m: 1,minWidth: 120}} size="small">
                  <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
@@ -64,8 +63,3 @@ const UsersPagination: React.FC<UsersPaginationProps> = ({onPageChange, onPageSi
   }
 
   export default UsersPagination;
-
-
-
-
-
