@@ -13,6 +13,7 @@ import { UserI } from '../api/UsersI';
 
 import UsersPagination from './Pagination';
 import classes from './UsersList.module.css';
+import usersClasses from '../Users.module.css';
 
 const gridStyles = {
   border: 'none',
@@ -143,10 +144,10 @@ const UsersList: React.FC = () => {
 
     return (
         <div className={classes.users} >
-          <Stack direction="row" className={classes.bar}>
-            <Typography className={classes.title}> All users</Typography>
-            <Divider className={classes.divider}/>
-            <Button className={classes.button}  onClick={() => {addUserRoute('/add')}}>Add user</Button> 
+          <Stack direction="row" className={usersClasses.bar}>
+            <Typography className={usersClasses.title}> All users</Typography>
+            <Divider className={usersClasses.divider}/>
+            <Button className={usersClasses.button}  onClick={() => {addUserRoute('/add')}}>Add user</Button> 
           </Stack>
           <DataGrid
             autoHeight 

@@ -1,9 +1,12 @@
 .addUserWrapper {
     width: 1100px;
     height: 600px;
-    margin: 20px 40px;
+   
 }
-
+.addUsers {
+    flex-grow: 1;
+    margin: 0px 40px;
+}
 .avatar {
     width: 200px;
     height: auto;

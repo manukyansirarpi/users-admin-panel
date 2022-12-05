@@ -1,6 +1,6 @@
-import React, { useReducer,useEffect, useCallback } from 'react';
+import React, { useReducer,useEffect, useCallback, Fragment } from 'react';
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { FormGroup, Paper, Button, Container, Stack } from '@mui/material';
+import { FormGroup, Paper, Button, Container, Stack, Typography, Divider } from '@mui/material';
 
 import { useAppDispatch } from '../../../app/hooks';
 import { addUserAsync, updateUserAsync , getUserData } from '../api/UsersSlice';
@@ -9,6 +9,7 @@ import { UserI } from '../api/UsersI';
 import PhotoUpload from './PhotoUpload';
 import Input from '../../../ui/Input';
 import classes from './AddUser.module.css';
+import usersClasses from '../Users.module.css';
 
 type Validatable = {
     value: string;
@@ -103,22 +104,28 @@ const AddUser: React.FC = () => {
     };
 
     return (
-      <Paper className ={classes.addUserWrapper}>
-        <Container maxWidth="sm">
-          <form>
-            <FormGroup>
-              <Input name="name" value={userData.name.value} error={userData.name.error} helperText={userData.name.error && userData.name.errorMessage} placeholder="User Name" onChange={handleInput}></Input>
-              <PhotoUpload onPhotoAdded={onPhotoAdded} userPhoto={userData.photo}></PhotoUpload>
-              <Input name="email" value={userData.email.value} error={userData.email.error}  helperText={userData.email.error && userData.email.errorMessage} placeholder="Email" onChange={handleInput}></Input>
-              <Input name="location" value={userData.location}  placeholder="Location" onChange={handleInput}></Input>
-            </FormGroup>
-            <Stack direction="row" justifyContent="flex-start">
-              <Button variant="contained" onClick={handleSubmit}>Save</Button>
-              <Button variant="contained"  onClick={cancelHandler}>Cancel</Button>
-            </Stack>
-          </form>
-        </Container>
-      </Paper>
+      <div className ={classes.addUsers}>
+        <Stack direction="row" className={usersClasses.bar}>
+          <Typography className={usersClasses.title}> {userId?  'Edit user' : 'New user'}</Typography>
+          <Divider className={usersClasses.divider}/>
+        </Stack>
+        <Paper className ={classes.addUserWrapper}>
+          <Container maxWidth="sm">
+            <form>
+              <FormGroup>
+                <Input name="name" value={userData.name.value} error={userData.name.error} helperText={userData.name.error && userData.name.errorMessage} placeholder="User Name" onChange={handleInput}></Input>
+                <PhotoUpload onPhotoAdded={onPhotoAdded} userPhoto={userData.photo}></PhotoUpload>
+                <Input name="email" value={userData.email.value} error={userData.email.error}  helperText={userData.email.error && userData.email.errorMessage} placeholder="Email" onChange={handleInput}></Input>
+                <Input name="location" value={userData.location}  placeholder="Location" onChange={handleInput}></Input>
+              </FormGroup>
+              <Stack direction="row" justifyContent="flex-start">
+                <Button variant="contained" onClick={handleSubmit}>Save</Button>
+                <Button variant="contained"  onClick={cancelHandler}>Cancel</Button>
+              </Stack>
+            </form>
+          </Container>
+        </Paper>
+      </div>
     );
 }
 

@@ -15,4 +15,37 @@
     width: 100%;
 }
 
-
+.bar {
+    height: 80px;
+    justify-content: space-between;
+}
+.bar .title {
+    height: 21px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
+    top: 22px;
+    position: relative;
+    margin-right: 40px;
+    color: #2D3446;
+}
+.bar .divider {
+    position: relative;
+    top: 34px;
+    border: none;
+    height: 2px;
+    background: #E1E6EC;
+    margin-bottom: 50px;
+    flex-grow: 1;
+}
+.bar .button, .bar .button:hover {
+    width: 114px;
+    height: 36px;
+    background: #407EFF;
+    border-radius: 4px;
+    color: #fff;
+    top: 20px;
+    margin-left: 40px;
+}
