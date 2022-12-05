@@ -119,8 +119,8 @@ const AddUser: React.FC = () => {
                 <Input name="location" value={userData.location}  placeholder="Location" onChange={handleInput}></Input>
               </FormGroup>
               <Stack direction="row" justifyContent="flex-start">
-                <Button variant="contained" onClick={handleSubmit}>Save</Button>
-                <Button variant="contained"  onClick={cancelHandler}>Cancel</Button>
+                <Button className={classes.flatButton} variant="contained" onClick={handleSubmit}>Save</Button>
+                <Button className={classes.flatButton} variant="contained"  onClick={cancelHandler}>Cancel</Button>
               </Stack>
             </form>
           </Container>
