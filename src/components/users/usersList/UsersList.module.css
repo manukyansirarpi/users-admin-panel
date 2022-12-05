@@ -42,3 +42,13 @@
     height: 60px;
     padding: 0 200px;
 }
+.userName {
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #878787;
+}
+
+.emailIcon {
+    color: #788195;
+}
